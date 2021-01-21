@@ -80,7 +80,7 @@ printf("[Time] %s: %f\n", name, getWatch.getTimings()[name]); \
 do{\
 getWatch.reset(name); \
 } while (false)
-
+/// Accumulate time with a counter.
 #define CTICK(name) \
 do {\
 getWatch.start(name,getWatch.getCurrentSystemTime()); \
@@ -129,7 +129,7 @@ TOCK_P(name); \
     
     class Watch {
     public:
-        void addStopwatchTiming(std::string name, unsigned long long int duration)
+        void addStopwatchTiming(const std::string& name, unsigned long long int duration)
         {
             if(duration > 0)
             {
@@ -140,8 +140,8 @@ TOCK_P(name); \
         static unsigned long long int getCurrentSystemTime()
         {
             timeval tv;
-            gettimeofday(&tv, 0);
-            unsigned long long int time = (unsigned long long int)(tv.tv_sec * 1000000 + tv.tv_usec);
+            gettimeofday(&tv, nullptr);
+            auto time = (unsigned long long int)(tv.tv_sec * 1000000 + tv.tv_usec);
             return time;
         }
         
@@ -184,7 +184,7 @@ TOCK_P(name); \
         std::map<std::string, std::pair<float,int>> &getCTimings(){return mClipTimes;}
         std::map<std::string, std::atomic_bool> &getUpdateStats(){return updateStates;}
 
-        bool updated (std::string name) {return updateStates[name];}
+        bool updated (const std::string& name) {return updateStates[name];}
     private:
         std::map<std::string, double> timings;
         std::map<std::string, std::atomic_bool> updateStates;

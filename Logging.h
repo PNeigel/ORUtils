@@ -24,9 +24,20 @@
 #include <mutex>
 #include <fstream>
 #include <sstream>
+#include <vector>
 
 namespace ORUtils {
     namespace logging {
+
+        static inline std::string format(const std::string& format, ...)
+        {
+            va_list args;
+            size_t len = std::vsnprintf(NULL, 0, format.c_str(), args);
+            std::vector<char> vec(len + 1);
+            std::vsnprintf(&vec[0], len + 1, format.c_str(), args);
+            return &vec[0];
+        }
+
         class Message {
         public:
             Message() : stream_(new std::stringstream) {}
@@ -147,14 +158,20 @@ namespace ORUtils {
                 ss << SeverityToString(record.severity);
 //        printf("%s", SeverityToString(record.severity));
 
+                va_list  args;
+                size_t len = std::vsnprintf(NULL, 0, record.message.str().c_str(),args);
+//                std::vector<char> vec(len + 1);
+//                std::vsnprintf(&vec[0], len + 1, record.message.str().c_str(), args);
+
                 // Print date time.
                 std::time_t tt = std::chrono::system_clock::to_time_t(record.time);
                 std::tm *tm = localtime(&tt);
-                char buffer[1024];
-                sprintf(buffer, "%02d%02d %02d:%02d:%02d",
+                std::vector<char> buffer(len + 1024);
+//                char buffer[1024];
+                sprintf(buffer.data(), "%02d%02d %02d:%02d:%02d",
                         tm->tm_mon + 1, tm->tm_mday,
                         tm->tm_hour, tm->tm_min, tm->tm_sec);
-                ss << buffer;
+                ss << buffer.data();
 
                 auto since_epoch = record.time.time_since_epoch();
                 std::chrono::seconds s =
@@ -165,14 +182,14 @@ namespace ORUtils {
                 typedef std::chrono::milliseconds Milliseconds;
                 Milliseconds milliseconds =
                         std::chrono::duration_cast<Milliseconds>(since_epoch);
-                sprintf(buffer, ".%03" PRId64 "", milliseconds.count());
-                ss << buffer;
+                sprintf(buffer.data(), ".%03" PRId64 "", milliseconds.count());
+                ss << buffer.data();
 
                 // Print message.
-                sprintf(buffer, " %s:%s:%d] ", record.filename.c_str(),record.functionname.c_str(), record.line);
-                ss << buffer;
-                sprintf(buffer, "%s\n", record.message.str().c_str());
-                ss << buffer;
+                sprintf(buffer.data(), " %s:%s:%d] ", record.filename.c_str(),record.functionname.c_str(), record.line);
+                ss << buffer.data();
+                sprintf(buffer.data(), "%s\n", record.message.str().c_str());
+                ss << buffer.data();
 
                 if (CheckSeverity(record.severity)) {
                     if(mbLogToFile) {
