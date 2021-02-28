@@ -16,7 +16,7 @@
 #pragma once
 #ifndef SCLOGGING_H_
 #define SCLOGGING_H_
-
+#include <vector>
 #include <chrono>
 #include <cinttypes>
 #include <ctime>
