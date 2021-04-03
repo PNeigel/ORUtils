@@ -29,6 +29,7 @@ namespace ORUtils
 		using MemoryBlock<T>::CUDA_TO_CUDA;
 
 		/** Expose public MemoryBlock<T> member functions. */
+        using MemoryBlock<T>::Fill;
 		using MemoryBlock<T>::Clear;
 		using MemoryBlock<T>::GetData;
 		using MemoryBlock<T>::GetDataConst;

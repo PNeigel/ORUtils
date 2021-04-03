@@ -261,6 +261,12 @@ namespace ORUtils {
 		    return out;
 		}
 
+        _CPU_AND_GPU_CODE_ static inline Matrix4 Identity() {
+            Matrix4 t;
+            t.setIdentity();
+            return t;
+        };
+
 		friend std::ostream& operator<<(std::ostream& os, const Matrix4<T>& dt) {
 			for (int y = 0; y < 4; y++)
 				os << dt(0, y) << ", " << dt(1, y) << ", " << dt(2, y) << ", " << dt(3, y) << "\n";
@@ -392,6 +398,12 @@ namespace ORUtils {
 			return true;
 		}
 
+		_CPU_AND_GPU_CODE_ static inline Matrix3 Identity() {
+		    Matrix3 t;
+		    t.setIdentity();
+		    return t;
+		};
+
 		friend std::ostream& operator<<(std::ostream& os, const Matrix3<T>& dt)	{
 			for (int y = 0; y < 3; y++)
 				os << dt(0, y) << ", " << dt(1, y) << ", " << dt(2, y) << "\n";
@@ -489,6 +501,16 @@ namespace ORUtils {
     }
 
 
+    template<typename T> _CPU_AND_GPU_CODE_ inline Matrix3<T> skewMatrix(const Vector3<T> &v){
+        auto out = Matrix3<T>::Identity();
+        out.m01 = -v.z;
+        out.m02 = v.y;
+        out.m01 = v.z;
+        out.m01 = -v.x;
+        out.m01 = -v.y;
+        out.m01 = v.x;
+        return out;
+    }
 
 }
 

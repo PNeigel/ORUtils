@@ -182,6 +182,21 @@ namespace ORUtils
 			Clear();
 		}
 
+        /**
+         * \brief Sets all memory block entries to the given @p defaultValue.
+         *
+         * \pre This currently only works for memory blocks that are allocated on the CPU.
+         */
+        void Fill(T value)
+        {
+            if (!isAllocated_CPU) throw std::runtime_error("Error: MemoryBlock::Fill only works for memory blocks that are allocated on the CPU");
+
+            std::fill(data_cpu, data_cpu + dataSize, value);
+#ifndef COMPILE_WITHOUT_CUDA
+            if (isAllocated_CUDA) this->UpdateDeviceFromHost();
+#endif
+        }
+
 		/** Resize a memory block, losing all old data.
 		Essentially any previously allocated data is
 		released, new memory is allocated.
