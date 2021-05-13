@@ -201,6 +201,8 @@ namespace tools {
             if(tmp.size() == path.size()) return path; // is name already.
 
             output = path.substr(tmp.size(), path.length());
+
+            if (output[0] == '/') output = output.substr(1,output.length());
             return output;
         }
 
