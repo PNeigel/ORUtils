@@ -929,10 +929,16 @@ namespace ORUtils {
 		return tmp;
 	}
 
-	// return the length of the provided vector
-	template< class T> _CPU_AND_GPU_CODE_ inline typename T::value_type length(const T &vec) {
-		return sqrt(dot(vec, vec));
-	}
+    // return the length of the provided vector
+    template< class T> _CPU_AND_GPU_CODE_ inline typename T::value_type squarelength(const T &vec) {
+        return dot(vec, vec);
+    }
+
+    // return the length of the provided vector
+    template< class T> _CPU_AND_GPU_CODE_ inline typename T::value_type length(const T &vec) {
+        return sqrt(squarelength(vec));
+    }
+
 
 	// return the normalized version of the vector
 	template< class T> _CPU_AND_GPU_CODE_ inline T normalize(const T &vec)	{
