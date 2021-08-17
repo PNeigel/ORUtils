@@ -14,6 +14,7 @@
 //    SCLOG(INFO) << "This is test info log";
 //
 #pragma once
+//#define NOMINMAX
 #ifndef SCLOGGING_H_
 #define SCLOGGING_H_
 #include <vector>
@@ -24,6 +25,7 @@
 #include <mutex>
 #include <fstream>
 #include <sstream>
+#include <algorithm>
 
 namespace ORUtils {
     namespace logging {

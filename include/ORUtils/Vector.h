@@ -8,6 +8,8 @@
 #include "MathUtils.h"
 #include "PlatformIndependence.h"
 
+typedef unsigned int uint;
+
 namespace ORUtils {
 	//////////////////////////////////////////////////////////////////////////
 	//						Basic Vector Structure
