@@ -27,6 +27,8 @@
 #include <sstream>
 #include <algorithm>
 
+#undef ERROR
+
 namespace ORUtils {
     namespace logging {
         class Message {
