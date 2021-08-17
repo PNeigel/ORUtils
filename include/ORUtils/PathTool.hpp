@@ -15,6 +15,7 @@
 #include <cstring>
 #ifdef WIN32 //For create/delete files
 #include <direct.h>
+#include <dirent.h>
 #else
 #include <sys/stat.h>
 #include <dirent.h>
@@ -169,7 +170,8 @@ namespace tools {
         }
         [[maybe_unused]] static bool checkfolderexist(const std::string& output_db_name){
 #ifdef WIN32
-            DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
+			//DWORD ftyp = GetFileAttributesA(dirName_in.c_str());
+			DWORD ftyp = GetFileAttributesA(output_db_name.c_str());
         if (ftyp == INVALID_FILE_ATTRIBUTES)
             return false;  //something is wrong with your path!
 
@@ -326,7 +328,11 @@ namespace tools {
                     }
                 }
             } else {
+#if defined _MSC_VER
+				mkdir(name.substr(0, name.find_first_of('/')).c_str());
+#else
                 mkdir(name.substr(0, name.find_first_of('/')).c_str(), 0777);
+#endif
             }
         }
 
